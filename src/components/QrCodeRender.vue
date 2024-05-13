@@ -31,9 +31,6 @@
     />
   </div>
   <div>
-    <q-input v-model="mynetwork" label="SSID" />
-    <q-input v-model="password" label="PASSWORD" />
-
     <q-slider
       class="q-mt-lg"
       v-model="size"
@@ -46,6 +43,9 @@
       color="purple"
     />
 
+    <q-input v-model="mynetwork" label="SSID" />
+    <q-input v-model="password" label="PASSWORD" />
+
     <div class="q-pa-md">
       <div class="q-gutter-sm">
         <q-radio v-model="AuthenticationType" val="WEP" label="WEP" />
@@ -53,14 +53,26 @@
         <q-radio v-model="AuthenticationType" val="WPA2-EAP" label="WPA2-EAP" />
         <q-radio v-model="AuthenticationType" val="nopass" label="パスワードなし" />
       </div>
-    </div>
+      <div v-if="AuthenticationType === 'WPA2-EAP'">
+        <q-card class="my-card">
+          <q-card-section>
+            WPA2-EAP設定
+            <div class="q-gutter-sm">
+              <q-radio v-model="EAPE" val="TTLS" label="TTLS" />
+              <q-radio v-model="EAPE" val="PWD" label="PWD" />
+            </div>
 
-    <div class="q-pa-md">
-      <div class="q-gutter-sm">
-        <div>
-          <q-checkbox v-model="TransitionMode" label="WPA2/WPA3 トランジションモード無効" />
-        </div> 
+            <q-input v-model="EAPA" label="匿名ID" />
+            <q-input v-model="EAPI" label="ID" />
+            <q-input v-model="EAPPH2" label="フェーズ２方式" />
+          </q-card-section>
+        </q-card>
       </div>
+
+      <div>
+        <q-checkbox v-model="TransitionMode" label="WPA2/WPA3 トランジションモード無効" />
+        <q-checkbox v-model="SSIDHidden" label="SSID非表示" />
+      </div> 
     </div>
   </div>
 </template>
@@ -75,14 +87,32 @@
   const size = ref(200);
   const AuthenticationType = ref('WEP');
   const TransitionMode = ref(false);
+  const SSIDHidden = ref(false);
+
+  const EAPE = ref('TTLS'); // EAP方式
+  const EAPA = ref('anon'); // 匿名ID
+  const EAPI = ref('myidentity'); // ID
+  const EAPPH2 = ref('MSCHAPV2'); // フェーズ２方式
 
   // WiFi用QRCodeテキスト生成
   const wifiValue = computed(() => {
-    return('WIFI:' 
-     + 'S:"' + mynetwork.value + '"'
-     + ';T:' + AuthenticationType.value
-     + ';R:' + (TransitionMode.value === false ? '0' : '1')
-     + ';P:"' + password.value + '"'
-     + ';;')
+    let wifiStr = 'WIFI:' 
+                + 'S:' + mynetwork.value + ''
+                + ';T:' + AuthenticationType.value
+                + ';R:' + (TransitionMode.value === false ? '0' : '1')
+                + ';R:' + (SSIDHidden.value === false ? 'false' : 'true')
+                + ';P:' + password.value + ''
+                ;
+
+    // WPA2-EAPのみ
+    if(AuthenticationType.value === 'WPA2-EAP') {
+      wifiStr += ';E:' + EAPE.value + ''
+              + ';A:' + EAPA.value + ''
+              + ';I:' + EAPI.value + ''
+              + ';PH2:' + EAPPH2.value + ''
+              ;
+    }
+
+     return(wifiStr + ';;')
   });
 </script>
