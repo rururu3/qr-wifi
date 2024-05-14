@@ -1,13 +1,10 @@
+# WiFi接続用QRCode生成
+[GitHubPages上で動作してます](https://rururu3.github.io/qr-wifi/)
+
 # qr-wifi テキスト仕様
 https://github.com/zxing/zxing/wiki/Barcode-Contents#wi-fi-network-config-android-ios-11
 
 https://nakanishi.dev/posts/wifi_qrcode/
-
-# qrcode.vue
-https://www.npmjs.com/package/qrcode.vue
-
-こっちのほうが機能が多い？
-https://github.com/scholtz/qrcode-vue3
 
 # QRCode Wifi
 COPILOTの回答
@@ -42,3 +39,10 @@ Wi-Fi QR コードは、ユーザーが手動で設定を入力する手間を�
 (4) Wi-Fi Easy Connect | Wi-Fi Alliance. https://www.wi-fi.org/discover-wi-fi/wi-fi-easy-connect.
 (5) QR Code Standardization | QRcode.com | DENSO WAVE. https://www.qrcode.com/en/about/standards.html.
 ```
+
+# qrcode.vue
+https://www.npmjs.com/package/qrcode.vue
+
+こっちのほうが機能が多いのでこちらを使用しています
+https://github.com/scholtz/qrcode-vue3
+
